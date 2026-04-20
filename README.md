@@ -1,32 +1,12 @@
 # Task Management System (Django + DRF)
 
-A production-style Task Manager backend built with Django and Django REST Framework.
-This project supports JWT auth, task lifecycle management, filtering/search, comments,
-attachments, dashboard analytics, demo access flows, and Vercel deployment.
+Task Manager backend project built with Django and Django REST Framework, deployed on Vercel.
+The project now uses a clean **Admin-only demo flow**: one click logs into Demo Admin and opens Django Admin.
 
 ## Live Demo
 
 - App URL: `https://task-management-system-izdeb35vg-maloth-sridhar-varmas-projects.vercel.app/`
-- One-click admin demo: `GET /api/auth/demo-admin/`
-- JWT demo user login: `POST /api/auth/demo-login/`
-
-## Features
-
-### Core (MVP)
-- User registration, JWT login, token refresh, logout with token blacklist
-- Task CRUD (create, list, retrieve, update, delete)
-- Task fields: `title`, `description`, `priority`, `status`, `due_date`
-- Filtering by `status`, `priority`, `due_date`
-- Search by task `title` and `description`
-- Overdue logic (`is_overdue`) for unfinished tasks past due date
-- Dashboard counts (`total`, `completed`, `overdue`, `due_today`, etc.)
-
-### Nice-to-Have
-- Task comments
-- File attachments
-- Email reminder command for due/overdue tasks
-- Demo Admin one-click login to Django Admin panel
-- Demo User JWT button from landing page
+- Admin demo login: `GET /api/auth/demo-admin/`
 
 ## Tech Stack
 
@@ -94,7 +74,6 @@ task-manager-django/
 - `POST /api/auth/login/` - Login and get access/refresh tokens
 - `POST /api/auth/refresh/` - Refresh access token
 - `POST /api/auth/logout/` - Blacklist refresh token
-- `POST /api/auth/demo-login/` - Demo User JWT login
 - `GET /api/auth/demo-admin/` - Session login as Demo Admin and redirect to `/admin/`
 
 ### Tasks
@@ -153,19 +132,13 @@ Run server:
 python manage.py runserver
 ```
 
-## Demo Flows
+## Demo Flow
 
-### 1) Demo Admin (UI + Admin)
+### Demo Admin (UI + Admin)
 1. Open `/`
-2. Click **Open Admin as Demo Admin**
+2. Click **Login as Demo Admin**
 3. Auto-login + redirect to `/admin/`
 4. On admin logout, user is redirected back to `/`
-
-### 2) Demo User (JWT API)
-1. Open `/`
-2. Click **Login as Demo User (JWT)**
-3. Access and refresh tokens are shown
-4. Use access token in `Authorization: Bearer <token>` for task APIs
 
 ## Reminder Command
 
