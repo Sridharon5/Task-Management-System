@@ -36,10 +36,10 @@ class DemoLoginView(APIView):
         return self.post(request)
 
     def post(self, request):
-        # Demo user for evaluator access without registration friction.
-        demo_username = "demo_user"
+        # Demo admin for evaluator access without registration friction.
+        demo_username = "demo_admin"
         demo_password = "Demo@12345"
-        demo_email = "demo.user@example.com"
+        demo_email = "demo.admin@example.com"
         try:
             user, created = User.objects.get_or_create(
                 username=demo_username,
@@ -47,13 +47,19 @@ class DemoLoginView(APIView):
             )
             if created or not user.check_password(demo_password):
                 user.set_password(demo_password)
-                user.save(update_fields=["password"])
+            user.email = demo_email
+            user.is_staff = True
+            user.is_superuser = True
+            user.is_active = True
+            user.save(update_fields=["password", "email", "is_staff", "is_superuser", "is_active"])
 
             refresh = RefreshToken.for_user(user)
             return Response(
                 {
-                    "message": "Demo login successful.",
+                    "message": "Demo admin login successful.",
                     "username": demo_username,
+                    "is_staff": user.is_staff,
+                    "is_superuser": user.is_superuser,
                     "access": str(refresh.access_token),
                     "refresh": str(refresh),
                 },

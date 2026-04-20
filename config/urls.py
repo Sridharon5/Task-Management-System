@@ -27,8 +27,8 @@ def home(request):
     <body>
       <div class="card">
         <h1>Task Manager API is running</h1>
-        <p class="muted">Quick evaluator access: click the button to login as demo user and receive JWT tokens.</p>
-        <button onclick="demoLogin()">Login as Demo User</button>
+        <p class="muted">Quick evaluator access: click the button to login as demo admin and receive JWT tokens.</p>
+        <button onclick="demoLogin()">Login as Demo Admin</button>
         <p class="muted">Endpoint: POST /api/auth/demo-login/</p>
         <pre id="result">No token generated yet.</pre>
       </div>
