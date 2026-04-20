@@ -1,0 +1,7 @@
+django
+djangorestframework
+djangorestframework-simplejwt
+django-filter
+pillow
+dj-database-url
+psycopg[binary]
