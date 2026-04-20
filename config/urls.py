@@ -1,9 +1,16 @@
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
+from django.contrib.auth import logout as django_logout
 from django.http import HttpResponse
+from django.shortcuts import redirect
 from django.urls import path, include
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+
+
+def admin_logout_redirect(request):
+    django_logout(request)
+    return redirect("/")
 
 
 def home(request):
@@ -27,9 +34,10 @@ def home(request):
     <body>
       <div class="card">
         <h1>Task Manager API is running</h1>
-        <p class="muted">Quick evaluator access: click button to open Django admin as Demo Admin.</p>
+        <p class="muted">Quick evaluator access: use Demo Admin for Django admin or Demo User for JWT API.</p>
         <button onclick="window.location.href='/api/auth/demo-admin/'">Open Admin as Demo Admin</button>
-        <p class="muted">API endpoint for JWT: POST /api/auth/demo-login/</p>
+        <button onclick="demoLogin()" style="margin-left: 10px;">Login as Demo User (JWT)</button>
+        <p class="muted">JWT endpoint: POST /api/auth/demo-login/</p>
         <pre id="result">No token generated yet.</pre>
       </div>
       <script>
@@ -72,6 +80,7 @@ def home(request):
 
 urlpatterns = [
     path("", home),   # <-- add this line
+    path("admin/logout/", admin_logout_redirect),
     path("admin/", admin.site.urls),
 
     path("api/auth/", include("accounts.urls")),

@@ -35,6 +35,25 @@ class DemoLoginView(APIView):
     permission_classes = [AllowAny]
 
     @staticmethod
+    def get_demo_user():
+        demo_username = "demo_user"
+        demo_password = "Demo@12345"
+        demo_email = "demo.user@example.com"
+
+        user, created = User.objects.get_or_create(
+            username=demo_username,
+            defaults={"email": demo_email},
+        )
+        if created or not user.check_password(demo_password):
+            user.set_password(demo_password)
+        user.email = demo_email
+        user.is_staff = False
+        user.is_superuser = False
+        user.is_active = True
+        user.save(update_fields=["password", "email", "is_staff", "is_superuser", "is_active"])
+        return user, demo_username
+
+    @staticmethod
     def get_demo_admin_user():
         demo_username = "demo_admin"
         demo_password = "Demo@12345"
@@ -58,11 +77,11 @@ class DemoLoginView(APIView):
 
     def post(self, request):
         try:
-            user, demo_username = self.get_demo_admin_user()
+            user, demo_username = self.get_demo_user()
             refresh = RefreshToken.for_user(user)
             return Response(
                 {
-                    "message": "Demo admin login successful.",
+                    "message": "Demo user login successful.",
                     "username": demo_username,
                     "is_staff": user.is_staff,
                     "is_superuser": user.is_superuser,
