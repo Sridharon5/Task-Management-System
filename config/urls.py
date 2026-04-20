@@ -37,10 +37,23 @@ def home(request):
           const result = document.getElementById('result');
           result.textContent = 'Logging in...';
           try {
-            const resp = await fetch('/api/auth/demo-login/', { method: 'POST' });
-            const data = await resp.json();
+            const resp = await fetch('/api/auth/demo-login/', {
+              method: 'POST',
+              headers: { 'Accept': 'application/json' }
+            });
+            const raw = await resp.text();
+            let data;
+            try {
+              data = JSON.parse(raw);
+            } catch {
+              data = { detail: raw };
+            }
             if (!resp.ok) {
-              result.textContent = JSON.stringify(data, null, 2);
+              result.textContent = JSON.stringify({
+                status: resp.status,
+                message: 'Demo login failed',
+                response: data
+              }, null, 2);
               return;
             }
             localStorage.setItem('demo_access_token', data.access);
